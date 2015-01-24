@@ -383,3 +383,5 @@ PHP.Utils.QueryString = function( str ) {
 
     return items;
 };
+
+module.exports = PHP;
