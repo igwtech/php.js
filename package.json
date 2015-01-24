@@ -1,7 +1,7 @@
 {
-  "name": "php.js",
+  "name": "phpvm",
   "description": "PHP to JavaScript converter and VM written in JavaScript",
-  "version": "0.1.0",
+  "version": "0.0.1",
   "homepage": "http://phpjs.hertzen.com/",
   "author": {
     "name": "Niklas von Hertzen",
@@ -10,10 +10,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/niklasvh/php.js.git"
+    "url": "https://github.com/akenn/php.js.git"
   },
   "bugs": {
-    "url": "https://github.com/niklasvh/php.js/issues"
+    "url": "https://github.com/akenn/php.js/issues"
   },
   "licenses": [
     {
@@ -21,7 +21,7 @@
       "url": "http://phpjs.hertzen.com//blob/master/LICENSE-MIT"
     }
   ],
-  "main": "lib/php",
+  "main": "dist/php.min.js",
   "engines": {
     "node": ">= 0.6.0"
   },
