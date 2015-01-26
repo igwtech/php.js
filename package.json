@@ -1,7 +1,7 @@
 {
   "name": "phpvm",
   "description": "PHP to JavaScript converter and VM written in JavaScript",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "homepage": "http://phpjs.hertzen.com/",
   "author": {
     "name": "Niklas von Hertzen",
