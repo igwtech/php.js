@@ -1,17 +1,21 @@
+var _ = require('underscore');
+
 var PHP = function( code, opts ) {
-    var opts = opts || {};
-    opts.filesystem = opts.filesystem || typeof(window) !== "undefined" ? new PHP.Adapters.XHRFileSystem() : require('fs');
-    opts.SERVER = opts.SERVER || {};
-    opts.SERVER.SCRIPT_FILENAME = opts.SERVER.SCRIPT_FILENAME || "";
-    opts.root = opts.root || '';
+    opts = _.defaults({
+      filesystem: !_.isUndefined(window) ? new PHP.Adapters.XHRFileSystem() : require('fs'),
+      server: {
+        SCRIPT_FILENAME: ''
+      },
+      cfgFile: 'cfg/php.ini',
+      ini: {},
+      POST: {},
+      RAW_POST: '',
+      GET: {},
+      FILES: {}
+    }, opts);
 
-    var iniContent = opts.filesystem.readFileSync( opts.root + "cfg/php.ini" ),
-    iniSet = opts.ini || {};
+    var iniContent = opts.filesystem.readFileSync( opts.cfgFile );
     opts.ini = PHP.ini( iniContent );
-
-    Object.keys( iniSet ).forEach(function(key){
-        this[ key ] = iniSet[ key ];
-    }, opts.ini);
 
     this.tokens = PHP.Lexer( code, opts.ini );
     try {
@@ -22,31 +26,9 @@ var PHP = function( code, opts ) {
         return this;
     }
 
-
-    var POST = opts.POST,
-    RAW_POST = opts.RAW_POST,
-    RAW = (RAW_POST !== undefined ) ? PHP.RAWPost( RAW_POST ) : {};
-
-    opts.POST = ( POST !== undefined ) ? PHP.Utils.QueryString( POST ) : (RAW_POST !== undefined ) ? RAW.Post() : {};
-    opts.RAW_POST = ( RAW_POST !== undefined ) ? RAW.Raw() : (POST !== undefined ) ? POST.trim() :  "";
-    opts.GET = ( opts.GET !== undefined ) ? PHP.Utils.QueryString( opts.GET ) : {};
-
-    opts.FILES = (RAW_POST !== undefined ) ? RAW.Files( opts.ini.upload_max_filesize, opts.ini.max_file_uploads, opts.ini.upload_tmp_dir ) : {};
-
-    // needs to be called after RAW.Files
-    if (RAW_POST !== undefined ) {
-        RAW.WriteFiles( opts.filesystem.writeFileSync );
-    }
-
-
-
     this.compiler = new PHP.Compiler( this.AST, opts.SERVER.SCRIPT_FILENAME );
 
     this.vm = new PHP.VM( this.compiler.src, opts );
-
-    if (RAW_POST !== undefined ) {
-        RAW.Error(this.vm[ PHP.Compiler.prototype.ERROR ].bind( this.vm ), opts.SERVER.SCRIPT_FILENAME);
-    }
 
     this.vm.Run();
 };
