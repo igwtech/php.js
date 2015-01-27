@@ -1,7 +1,7 @@
 var _ = require('underscore');
 
 var PHP = function( code, opts ) {
-    opts = _.defaults({
+    opts = _.extend({
       filesystem: !_.isUndefined(window) ? new PHP.Adapters.XHRFileSystem() : require('fs'),
       server: {
         SCRIPT_FILENAME: ''
