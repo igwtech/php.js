@@ -92,6 +92,7 @@ module.exports = function(grunt) {
                     "src/modules/output/ob_get_length.js",
                     "src/modules/output/ob_get_level.js",
                     "src/modules/pcre/preg_match.js",
+                    "src/modules/pcre/preg_replace.js",
                     "src/modules/string/echo.js",
                     "src/modules/string/explode.js",
                     "src/modules/string/implode.js",

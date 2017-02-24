@@ -11,7 +11,7 @@
  */
 
 
-PHP.Parser = function ( preprocessedTokens, eval ) {
+PHP.Parser = function ( preprocessedTokens, _eval ) {
 
     var yybase = this.yybase,
     yydefault = this.yydefault,
@@ -176,7 +176,7 @@ PHP.Parser = function ( preprocessedTokens, eval ) {
                 attributeStack[ this.stackPos ] = this.startAttributes;
             } else {
                 /* error */
-                if (eval !== true) {
+                if (_eval !== true) {
 
                     var expected = [];
 

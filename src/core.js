@@ -1,5 +1,7 @@
 var _ = require('underscore');
 
+var iniFiles = {};
+
 var PHP = function( code, opts ) {
     opts = _.extend({
       filesystem: !_.isUndefined(window) ? new PHP.Adapters.XHRFileSystem() : require('fs'),
@@ -14,7 +16,14 @@ var PHP = function( code, opts ) {
       FILES: {}
     }, opts);
 
-    var iniContent = opts.filesystem.readFileSync( opts.cfgFile );
+    var iniContent;
+    if (Object.prototype.hasOwnProperty.call(iniFiles, opts.cfgFile)) {
+        iniContent = iniFiles[opts.cfgFile];
+    } else {
+        iniContent = opts.filesystem.readFileSync(opts.cfgFile);
+        iniFiles[opts.cfgFile] = iniContent;
+    }
+
     opts.ini = PHP.ini( iniContent );
 
     this.tokens = PHP.Lexer( code, opts.ini );
