@@ -5,9 +5,8 @@ var iniFiles = {};
 var PHP = function( code, opts ) {
     opts = _.extend({
       filesystem: !_.isUndefined(window) ? new PHP.Adapters.XHRFileSystem() : require('fs'),
-      server: {
-        SCRIPT_FILENAME: ''
-      },
+      server: { SCRIPT_FILENAME: '' },
+      SERVER: { SCRIPT_FILENAME: '' },
       cfgFile: 'cfg/php.ini',
       ini: {},
       POST: {},
@@ -16,12 +15,14 @@ var PHP = function( code, opts ) {
       FILES: {}
     }, opts);
 
-    var iniContent;
-    if (Object.prototype.hasOwnProperty.call(iniFiles, opts.cfgFile)) {
-        iniContent = iniFiles[opts.cfgFile];
-    } else {
-        iniContent = opts.filesystem.readFileSync(opts.cfgFile);
-        iniFiles[opts.cfgFile] = iniContent;
+    var iniContent = '';
+    if (opts.cfgFile !== false) {
+        if (Object.prototype.hasOwnProperty.call(iniFiles, opts.cfgFile)) {
+            iniContent = iniFiles[opts.cfgFile];
+        } else {
+            iniContent = opts.filesystem.readFileSync(opts.cfgFile);
+            iniFiles[opts.cfgFile] = iniContent;
+        }
     }
 
     opts.ini = PHP.ini( iniContent );

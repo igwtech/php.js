@@ -1,5 +1,14 @@
+var _ = require('underscore');
 
 PHP.VM = function( src, opts ) {
+    opts.ini = _.extend({
+        variables_order: 'GPCS',
+        error_reporting: 'E_ALL',
+        post_max_size: '8M',
+        file_uploads: 1,
+        max_execution_time: 30,
+        display_errors: 1
+    }, opts.ini);
 
     var $ = PHP.VM.VariableHandler( this );
 
@@ -186,7 +195,6 @@ PHP.VM = function( src, opts ) {
     this.INPUT_BUFFER = opts.RAW_POST;
 
     // todo add error reporting level parser
-
     if (isNaN( this.$ini.error_reporting - 0)) {
         var lvl = this.$ini.error_reporting;
         ["E_ERROR",
