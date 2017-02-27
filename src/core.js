@@ -1,10 +1,8 @@
-var _ = require('underscore');
-
 var iniFiles = {};
 
 var PHP = function( code, opts ) {
-    opts = _.extend({
-      filesystem: !_.isUndefined(window) ? new PHP.Adapters.XHRFileSystem() : require('fs'),
+    opts = Object.assign({
+      filesystem: typeof window === 'undefined' ? new PHP.Adapters.XHRFileSystem() : require('fs'),
       server: { SCRIPT_FILENAME: '' },
       SERVER: { SCRIPT_FILENAME: '' },
       cfgFile: 'cfg/php.ini',

@@ -1,7 +1,5 @@
-var _ = require('underscore');
-
 PHP.VM = function( src, opts ) {
-    opts.ini = _.extend({
+    opts.ini = Object.assign({
         variables_order: 'GPCS',
         error_reporting: 'E_ALL',
         post_max_size: '8M',
